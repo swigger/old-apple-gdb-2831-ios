@@ -1266,9 +1266,9 @@ gdb$(EXEEXT): gdb.o libgdb.a $(CONFIG_OBS) $(ADD_DEPS) $(CDEPS) $(TDEPLIBS)
 	echo "stripping __objcInit";
 	echo "__objcInit" > /tmp/macosx-syms-to-remove;
 	-if [ -f .libs/gdb$(EXEEXT) ]; then \
-		strip -R /tmp/macosx-syms-to-remove -X .libs/gdb$(EXEEXT); \
+		strip -R /tmp/macosx-syms-to-remove -X .libs/gdb$(EXEEXT) || true ; \
 	else \
-		strip -R /tmp/macosx-syms-to-remove -X gdb$(EXEEXT); \
+		strip -R /tmp/macosx-syms-to-remove -X gdb$(EXEEXT) || true ; \
 	fi
 	rm -f /tmp/macosx-syms-to-remove;
 

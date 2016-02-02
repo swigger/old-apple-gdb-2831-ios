@@ -112,6 +112,7 @@ extern void *bfd_zmalloc2
   (bfd_size_type, bfd_size_type);
 
 extern void _bfd_default_error_handler (const char *s, ...);
+typedef void (*bfd_error_handler_type) (const char *, ...);
 extern bfd_error_handler_type _bfd_error_handler;
 
 /* These routines allocate and free things on the BFD's objalloc.  */

@@ -3,6 +3,8 @@ GDB_RC_VERSION = 2831
 
 BINUTILS_VERSION = 2.13-20021117
 BINUTILS_RC_VERSION = 46
+RC_OS=macos
+RC_RELEASE=tiger
 
 # Uncomment line below for debugging shell commands
 # SHELL = /bin/sh -x
@@ -20,7 +22,7 @@ BINUTILS_RC_VERSION = 46
 
 
 ifndef RC_ARCHS
-RC_ARCHS=$(shell /usr/bin/arch)
+RC_ARCHS=armv7s
 endif
 
 ifndef SRCROOT
@@ -116,21 +118,22 @@ BINUTILS_HEADERS = $(BINUTILS_FRAMEWORK)/Headers
 INTL_FRAMEWORK = $(BINUTILS_BUILD_ROOT)/usr/lib/libintl.dylib
 INTL_HEADERS = $(BINUTILS_BUILD_ROOT)/usr/include
 
-export SDKROOT_FOR_BUILD = $(shell xcodebuild -version -sdk macosx Path | head -1)
+export SDKROOT_FOR_BUILD = $(shell xcodebuild -version -sdk iphoneos Path | head -1)
+export SDKROOT = $(shell xcodebuild -version -sdk iphoneos Path | head -1)
 
-export AR       = $(shell xcrun -find ar)
-export CC       = $(shell xcrun -find clang)
-export CPP      = $(shell xcrun -find clang) -E -isysroot$(SDKROOT_FOR_BUILD)
-export CXX      = $(shell xcrun -find clang++)
-export LD       = $(shell xcrun -find ld)
+export AR       = arm-apple-darwin-ar
+export CC       = arm-apple-darwin-gcc
+export CPP      = arm-apple-darwin-gcc -E
+export CXX      = arm-apple-darwin-g++
+export LD       = arm-apple-darwin-ld
 export LIBTOOL  = $(shell xcrun -find libtool)
-export MAKE     = $(shell xcrun -find make)
+export MAKE     = make
 export NM       = $(shell xcrun -find nm)
 export RANLIB   = $(shell xcrun -find ranlib)
 export TAR      = $(shell xcrun -find gnutar)
 
-export CC_FOR_BUILD      = $(shell xcrun -find clang)
-export CCFLAGS_FOR_BUILD = -I$(SDKROOT_FOR_BUILD)/usr/include
+export CC_FOR_BUILD      = arm-apple-darwin-gcc
+export CCFLAGS_FOR_BUILD = 
 export LDFLAGS_FOR_BUILD = -isysroot $(SDKROOT_FOR_BUILD)
 
 ifndef CDEBUGFLAGS
@@ -138,7 +141,7 @@ CDEBUGFLAGS = -g -Os -funwind-tables -fasynchronous-unwind-tables -D_DARWIN_UNLI
 endif
 
 CFLAGS = $(CDEBUGFLAGS) $(RC_CFLAGS)
-HOST_ARCHITECTURE = UNKNOWN
+HOST_ARCHITECTURE = armv7s
 
 RC_CFLAGS_NOARCH = $(strip $(shell echo $(RC_CFLAGS) | sed -e 's/-arch [a-z0-9_]*//g'))
 
@@ -193,8 +196,8 @@ CONFIG_BUILD=--build=$(BUILD_ARCH)
 CONFIG_OTHER_OPTIONS?=--disable-serial-configure
 
 ifneq ($(findstring macosx,$(CANONICAL_ARCHS))$(findstring darwin,$(CANONICAL_ARCHS)),)
-CC = clang -arch $(HOST_ARCHITECTURE)
-CC_FOR_BUILD = clang
+CC = arm-apple-darwin-gcc
+CC_FOR_BUILD = arm-apple-darwin-gcc
 
 CDEBUGFLAGS = -g -Os
 
@@ -277,6 +280,7 @@ MAKE_ENV = $(EFLAGS)
 SUBMAKE = $(MAKE_ENV) $(MAKE)
 
 _all: all
+	echo $(CANONICAL_ARCHS) "=============================="
 
 
 crossarm: LIBEXEC_GDB_DIR=usr/libexec/gdb

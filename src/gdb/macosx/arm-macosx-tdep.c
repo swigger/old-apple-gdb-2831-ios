@@ -438,6 +438,8 @@ arm_set_osabi_from_host_info ()
       case GDB_OSABI_DARWINV7S:
         info.bfd_arch_info = bfd_lookup_arch (bfd_arch_arm, bfd_mach_arm_7s);
         break;
+      case GDB_OSABI_UNKNOWN:
+		break;
       default:
         warning ("Unrecognized osabi %d in arm_set_osabi_from_host_info", (int) info.osabi);
     }

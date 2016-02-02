@@ -45,7 +45,7 @@
 	skip_past_newline
 	copy_past_newline
 	dup		- a x x 
-	"@subsubsection @code{" - a x x b 
+	"@subsection @code{" - a x x b 
 	swap
 	remchar
 	"}\n" - a x b x c
@@ -57,7 +57,7 @@
 	skip_past_newline
 	copy_past_newline
 	dup		- a x x 
-	"@subsubsection @code{" - a x x b 
+	"@subsection @code{" - a x x b 
 	swap
 	remchar
 	"}\n" - a x b x c
@@ -89,7 +89,7 @@
 	"@subsection " asection  ;
 
 : SUBSUBSECTION
-	"@subsubsection " asection  ;
+	"@subsection " asection  ;
 
 : subhead
 	skip_past_newline
